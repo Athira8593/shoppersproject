@@ -1,0 +1,166 @@
+{%extends 'admin/base.html' %}
+{%block content%}
+{% load static%}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+
+<!-- partial -->
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="row" id="proBanner">
+      <div class="col-12">
+
+      </div>
+    </div>
+    <div class="page-header">
+      <h3 class="page-title">
+        <span class="page-title-icon bg-gradient-primary text-white mr-2">
+          <i class="mdi mdi-home"></i>
+        </span> Dashboard
+      </h3>
+
+    </div>
+    <div class="row">
+      <div class="col-md-4 stretch-card grid-margin">
+        <div class="card bg-gradient-danger card-img-holder text-white">
+          <div class="card-body">
+            <img src="{% static 'images1/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
+            <h4 class="font-weight-normal mb-3">Total Category
+            </h4>
+            <h2 class="mb-5">{{cat_count}}</h2>
+            <h6 class="card-text">Last updated : {{c_date}}, {{c_day}}</h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 stretch-card grid-margin">
+        <div class="card bg-gradient-info card-img-holder text-white">
+          <div class="card-body">
+            <img src="{% static 'images1/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
+            <h4 class="font-weight-normal mb-3">Total Product
+            </h4>
+            <h2 class="mb-5">{{product_count}}</h2>
+            <h6 class="card-text">Last updated : {{p_date}}, {{p_day}}</h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 stretch-card grid-margin">
+        <div class="card bg-gradient-success card-img-holder text-white">
+          <div class="card-body">
+            <img src="{% static 'images1/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
+            <h4 class="font-weight-normal mb-3"> Total Orders
+            </h4>
+            <h2 class="mb-5">{{order_count}}</h2>
+            <h6 class="card-text">Last updated : {{o_date}}, {{o_day}}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" >
+      <div class="col-md-7 grid-margin stretch-card" >
+        <div class="card">
+          <div class="card-body">
+            <div class="clearfix">
+              <h4 class="card-title">Product </h4>
+
+              <canvas id="myChart" width="400" height="400"></canvas>
+
+
+              <script>
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                  type: 'bar',
+                  data: {
+                    labels: {{ labels| safe}},
+                datasets: [{
+                  label: 'of order',
+                  data: {{ data| safe}},
+                  backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+                ],
+                  borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+                ],
+                  borderWidth: 1
+                              }]
+                          },
+                options: {
+                  scales: {
+                    y: {
+                      beginAtZero: true
+                    }
+                  }
+                }
+                      });
+              </script>
+              <div id="visit-sale-chart-legend" class="rounded-legend legend-horizontal legend-top-right float-right">
+              </div>
+            </div>
+            <canvas id="visit-sale-chart" class="mt-4"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Order </h4>
+
+            <canvas id="myChart1" width="400" height="400"></canvas>
+            <script>
+              var ctx = document.getElementById('myChart1').getContext('2d');
+              var myChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                  labels: {{ labels1| safe}},
+              datasets: [{
+                label: 'of quantity',
+                data: {{ data1| safe}},
+                backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+              ],
+                borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+              ],
+                borderWidth: 1
+        }]
+    },
+              options: {
+                
+              }
+});
+            </script>
+            <canvas id="traffic-chart"></canvas>
+            <div id="traffic-chart-legend" class="rounded-legend legend-vertical legend-bottom-left pt-4"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+<!-- plugins:js -->
+
+{%endblock%}

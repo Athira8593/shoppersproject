@@ -1,0 +1,78 @@
+{%extends 'admin/base.html' %}
+{%block content%}
+<!-- partial -->
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="page-header">
+      </nav>
+    </div>
+    <div class="row">
+
+      <div class="col-md-6 col-sm-12">
+        <form action="" method="POST">
+          {%csrf_token%}
+          <label for="tableFormControlFile1">From</label>
+          <input type="date" class="form-control"  id="fromdate" name="datefrom" onchange="from(event)" value="" min="2021-03-01" max="2021-06-01" >
+          <label for="exampleFormControlFile1">to</label>
+          <input type="date" class="form-control"  id="todate" name="dateto" >
+      <br>
+          <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+      </div>
+<div class="col-md-6 col-sm-12" style="margin-top: 10rem; padding-left: 2rem;">
+  <a href="{% url 'order_export_csv' %}" class="btn btn-primary" style="height: 3rem;">Export to CSV</a>&nbsp;&nbsp;
+  <a href="{% url 'order_export_excel' %}" class="btn btn-primary" style="height: 3rem;">Export to Excel</a>&nbsp;&nbsp;
+  <a href="{% url 'order_export_pdf' %}" class="btn btn-primary" style="height: 3rem;">Export to Pdf</a>
+
+</div>
+        <div class="col-lg-12 grid-margin stretch-card" style="margin-top: 2rem;">
+          
+        <div class="card">
+          
+          <div class="card-body">
+            <!-- <h4 class="card-title">Striped Table</h4> -->
+            <!-- <p class="card-description"> Add class <code>.table-striped</code> -->
+            <!-- </p> -->
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Order Number</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">User</th>
+                  <th scope="col">Contact</th>
+                  <th scope="col">Payment</th>
+                  <th scope="col">Coupon</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in reports%}
+                <tr>
+                  <td>{{forloop.counter}}</td>
+                  <td>#{{i.order_number}}</td>
+
+                  <td>{{i.updated_at}}</td>
+                  <td>{{i.user}}</td>
+                  <td>{{i.user.phone_no}}</td>
+                  <td>Paypal</td>
+                  <td>{{i.coupon}}</td>
+                  <td>{{i.status}}</td>
+                  <td>{{i.order_total}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  {%endblock%}
+
+
+
+
+

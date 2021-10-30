@@ -70,15 +70,15 @@ def admin_home(request):
         product_count=Product.objects.count()
         cat_count=Category.objects.count()
 
-        product_date = Product.objects.order_by('-id')[1]
+        product_date = Product.objects.order_by('-id').first()
         p_date=product_date.updated.date()
         p_day=product_date.updated.strftime("%A")
 
-        order_date = Product.objects.order_by('-id')[1]
+        order_date = Product.objects.order_by('-id').first()
         o_date=order_date.updated.date()
         o_day=order_date.updated.strftime("%A")
 
-        cat_date = Product.objects.order_by('-id')[1]
+        cat_date = Product.objects.order_by('-id').first()
         c_date=cat_date.updated.date()
         c_day=cat_date.updated.strftime("%A")
 

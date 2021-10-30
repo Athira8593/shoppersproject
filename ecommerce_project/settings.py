@@ -90,8 +90,8 @@ DATABASES = {
     'default': {
         'ENGINE': config('ENGINE'),
         'USER': config('DB_USER',cast=str),
-        'NAME': config('NAME'),
-        'PASSWORD': config('PASSWORD'),
+        'NAME': config('DB_NAME'),
+        'PASSWORD': config('DB_PASSWORD'),
         'HOST': config('HOST'),
         'PORT': config('PORT')
 

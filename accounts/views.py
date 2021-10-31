@@ -49,46 +49,51 @@ def user_reg(request):
     if request.session.get('login') == True:
         return redirect('/')
     else:
-        if request.method == 'POST':
-            first_name = request.POST['first_name']
-            last_name = request.POST['last_name']
-            username = request.POST['username']
-            password1 = request.POST['password1']
-            password2 = request.POST['password2']
-            email = request.POST['email']
-            phone_no = request.POST['phone_no']
+        try: 
 
-            if password1 == password2:
-                if Account.objects.filter(username=username).exists():
-                    messages.error(request, 'Username already taken')
-                    return redirect('signup')
-                elif Account.objects.filter(email=email).exists():
-                    messages.error(request,'Email already taken') 
-                    return redirect('signup')
-                elif Account.objects.filter(phone_no=phone_no).exists():
-                    messages.error(request,'Phone Number already taken') 
-                    return redirect('signup')
+            if request.method == 'POST':
+                first_name = request.POST['first_name']
+                last_name = request.POST['last_name']
+                username = request.POST['username']
+                password1 = request.POST['password1']
+                password2 = request.POST['password2']
+                email = request.POST['email']
+                phone_no = request.POST['phone_no']
+                if password1 == password2:
+                    if Account.objects.filter(username=username).exists():
+                        messages.error(request, 'Username already taken')
+                        return redirect('signup')
+                    elif Account.objects.filter(email=email).exists():
+                        messages.error(request,'Email already taken') 
+                        return redirect('signup')
+                    elif Account.objects.filter(phone_no=phone_no).exists():
+                        messages.error(request,'Phone Number already taken') 
+                        return redirect('signup')
+                    else:
+                        user  = Account.objects.create_user(first_name = first_name, last_name = last_name, username = username, password = password1, email = email, phone_no = phone_no)
+                        user.save
+                        request.session['phone_no'] = phone_no
+
+                        account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
+                        auth_token = "f3c156fed3058da73bae13ea0cd36bd8"
+                        client = Client(account_sid, auth_token)
+
+                        verification = client.verify \
+                            .services('VA8ba181d3b8ba0f7750f9b2297cc921a1') \
+                            .verifications \
+                            .create(to='+91'+phone_no, channel='sms')
+
+                        print(verification.status)
+                        return redirect('reg_otp')
                 else:
-                    user  = Account.objects.create_user(first_name = first_name, last_name = last_name, username = username, password = password1, email = email, phone_no = phone_no)
-                    user.save
-                    request.session['phone_no'] = phone_no
-
-                    account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
-                    auth_token = "f3c156fed3058da73bae13ea0cd36bd8"
-                    client = Client(account_sid, auth_token)
-
-                    verification = client.verify \
-                        .services('VA8ba181d3b8ba0f7750f9b2297cc921a1') \
-                        .verifications \
-                        .create(to='+91'+phone_no, channel='sms')
-
-                    print(verification.status)
-                    return redirect('reg_otp')
+                    messages.info(request,'Password not matching') 
+                    return redirect('signup')
             else:
-                messages.info(request,'Password not matching') 
-                return redirect('signup')
-        else:
-            return render(request, 'user/user_signup.html')
+                return render(request, 'user/user_signup.html')
+        except:
+            messages.info(request,'Invalid Phone number') 
+            return redirect('signup')
+
 
 
 # registration OTP

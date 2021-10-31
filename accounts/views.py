@@ -10,7 +10,7 @@ import requests
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.views.decorators.cache import never_cache
 
- # admin login   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
+ # admin login  
 def logincheck(request):
     if request.session.get('signin') == True:
         return redirect('admin_home')

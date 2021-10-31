@@ -12,9 +12,9 @@
         <form action="" method="POST">
           {%csrf_token%}
           <label for="tableFormControlFile1">From</label>
-          <input type="date" class="form-control"  id="fromdate" name="datefrom" onchange="from(event)" value="" min="2021-03-01" max="2021-06-01" >
+          <input type="date" class="form-control"  id="fromdate" name="datefrom" onchange="from(event)" value="" min="2014-1-01" max="2021-12-01" >
           <label for="exampleFormControlFile1">to</label>
-          <input type="date" class="form-control"  id="todate" name="dateto" >
+          <input type="date" class="form-control"  id="todate" name="dateto" min="2014-1-01" max="2021-12-01">
       <br>
           <button type="submit" class="btn btn-primary">Search</button>
         </form>
@@ -70,6 +70,40 @@
     </div>
   </div>
   </div>
+
+  <script>
+    $(document).ready(function() {
+      $('#table').DataTable( {
+          dom: 'Bfrtip',
+          buttons: [
+              'excelHtml5',
+              'csvHtml5',
+              'pdfHtml5'
+          ],
+          drawCallback: function () {
+              var hasRows = this.api().rows({ filter: 'applied' }).data().length > 0;
+              $('.buttons-csv')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+              $('.buttons-excel')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+              $('.buttons-pdf')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+          }
+      } );
+  } );
+
+
+  function from(event){
+      var start_date = event.target.value
+      document.getElementById("todate").min=start_date
+  }
+
+</script>
+
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+<script src= "https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script> -->
   {%endblock%}
 
 

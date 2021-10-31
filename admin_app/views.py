@@ -376,7 +376,9 @@ def order_reports(request):
         if request.method == 'POST':
             product = Product.objects.all()
             date_from = request.POST['datefrom']
-            date_to = request.POST['dateto']
+            date_to = datetime.datetime.strptime(request.POST['dateto'], "%Y-%m-%d")
+            date_to = date_to + datetime.timedelta(days=1)
+            date_to = datetime.datetime.strftime(date_to, "%Y-%m-%d")            
             order_search=Order.objects.filter(created_at__range=[date_from,date_to])
             return render(request, 'admin/admin_reports.html', {'reports': order_search})
         else:

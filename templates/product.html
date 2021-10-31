@@ -29,7 +29,7 @@
 				<div class="col-lg-3 col-6 product-incfhny mt-4">
 					<div class="product-grid2 transmitv">
 						<div class="product-image2">
-							<a href="">
+							<a href="{{product.get_url}}">
 								<img class="" src="{{product.image1.url}}">
 								<!-- <img class="" src="{% static 'images/shop-11.jpg' %}"> -->
 							</a>
@@ -70,7 +70,7 @@
 <script>
  function pop(){
 	swal({
-     text: "Product added to cart deleted.",
+     text: "Product added to cart.",
      type: "success",
      timer: 1000,
 	 button : false

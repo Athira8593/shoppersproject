@@ -29,7 +29,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['3.137.165.138',]
 
-
+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
 # Application definition
 
 INSTALLED_APPS = [

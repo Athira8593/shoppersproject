@@ -70,15 +70,37 @@ def admin_home(request):
         product_count=Product.objects.count()
         cat_count=Category.objects.count()
 
+        product_date = Product.objects.order_by('-id')[1]
+        p_date=product_date.updated.date()
+        p_day=product_date.updated.strftime("%A")
+
+        order_date = Product.objects.order_by('-id')[1]
+        o_date=order_date.updated.date()
+        o_day=order_date.updated.strftime("%A")
+
+        cat_date = Product.objects.order_by('-id')[1]
+        c_date=cat_date.updated.date()
+        c_day=cat_date.updated.strftime("%A")
 
         context={
             'cat_count':cat_count,
             'product_count':product_count,
             'order_count': order_count,
+
+            'o_date':o_date,
+            'o_day':o_day,
+
+            'c_date':c_date,
+            'c_day':c_day,
+
             'labels': labels,
             'data': data,
             'labels1': labels1,
             'data1': data1,
+
+            'p_date':p_date,
+            'p_day':p_day,
+
 
         }
         return render(request, 'admin/admin_home.html', context)

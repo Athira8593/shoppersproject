@@ -4,6 +4,7 @@ from . models import Account
 from django.contrib import messages
 from django.contrib.auth.models import User, auth
 from twilio.rest import Client
+from twilio.base.exceptions import TwilioRestException
 from cart.views import _cart_id
 from cart.models import CartItem, Cart
 import requests
@@ -49,7 +50,6 @@ def user_reg(request):
     if request.session.get('login') == True:
         return redirect('/')
     else:
-        try: 
 
             if request.method == 'POST':
                 first_name = request.POST['first_name']
@@ -73,27 +73,26 @@ def user_reg(request):
                         user  = Account.objects.create_user(first_name = first_name, last_name = last_name, username = username, password = password1, email = email, phone_no = phone_no)
                         user.save
                         request.session['phone_no'] = phone_no
+                        try:
+                            account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
+                            auth_token = "f3c156fed3058da73bae13ea0cd36bd8"
+                            client = Client(account_sid, auth_token)
 
-                        account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
-                        auth_token = "f3c156fed3058da73bae13ea0cd36bd8"
-                        client = Client(account_sid, auth_token)
+                            verification = client.verify \
+                                .services('VA8ba181d3b8ba0f7750f9b2297cc921a1') \
+                                .verifications \
+                                .create(to='+91'+phone_no, channel='sms')
 
-                        verification = client.verify \
-                            .services('VA8ba181d3b8ba0f7750f9b2297cc921a1') \
-                            .verifications \
-                            .create(to='+91'+phone_no, channel='sms')
-
-                        print(verification.status)
-                        return redirect('reg_otp')
+                            print(verification.status)
+                            return redirect('reg_otp')
+                        except:
+                            messages.error(request,'Invalid Phone Number') 
+                            return redirect('signup')
                 else:
                     messages.info(request,'Password not matching') 
                     return redirect('signup')
             else:
                 return render(request, 'user/user_signup.html')
-        except:
-            messages.info(request,'Invalid Phone number') 
-            return redirect('signup')
-
 
 
 # registration OTP

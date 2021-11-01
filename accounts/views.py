@@ -12,6 +12,8 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from django.views.decorators.cache import never_cache
 from decouple import config
 
+
+
  # admin login  
 def logincheck(request):
     if request.session.get('signin') == True:
@@ -82,8 +84,8 @@ def user_reg(request):
                 else:
                     try:
 
-                        account_sid = config('account_sid')
-                        auth_token = auth_token = config('auth_token')
+                        account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
+                        auth_token = "18651bb00bdbb076c24322e43c67c206"
                         client = Client(account_sid, auth_token)
 
                         verification = client.verify \
@@ -122,8 +124,8 @@ def reg_otp(request):
         first_name = request.session['first_name']
         last_name = request.session['last_name']
 
-        account_sid = config('account_sid')
-        auth_token = auth_token = config('auth_token')
+        account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
+        auth_token = "18651bb00bdbb076c24322e43c67c206"
         client = Client(account_sid, auth_token)
 
         verification_check = client.verify \
@@ -217,8 +219,8 @@ def phone_login(request):
 
                 request.session['phone_no'] = phone_no
 
-                account_sid = config('account_sid')
-                auth_token = auth_token = config('auth_token')
+                account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
+                auth_token = "18651bb00bdbb076c24322e43c67c206"
 
                 client = Client(account_sid, auth_token)
 
@@ -244,8 +246,8 @@ def login_otp(request):
 
         phone_no = request.session['phone_no']
 
-        account_sid = config('account_sid')
-        auth_token = auth_token = config('auth_token')
+        account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
+        auth_token = "18651bb00bdbb076c24322e43c67c206"
 
         client = Client(account_sid, auth_token)
 
@@ -288,8 +290,8 @@ def forgot_password(request):
 
                 request.session['phone_no'] = phone_no
 
-                account_sid = config('account_sid')
-                auth_token = auth_token = config('auth_token')
+                account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
+                auth_token = "18651bb00bdbb076c24322e43c67c206"
 
                 client = Client(account_sid, auth_token)
 
@@ -314,8 +316,8 @@ def forgot_otp(request):
 
         phone_no = request.session['phone_no']
 
-        account_sid = config('account_sid')
-        auth_token = auth_token = config('auth_token')
+        account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
+        auth_token = "18651bb00bdbb076c24322e43c67c206"
 
         client = Client(account_sid, auth_token)
 

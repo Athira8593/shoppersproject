@@ -30,7 +30,7 @@
 
 <!-- login form  -->
                 
-            <form action="{%url 'login_otp' %}" method="post">
+            <form action="{%url 'reg_otp' %}" method="post">
                 {% csrf_token %}
                     <div class="">
                       {% for message in messages%}

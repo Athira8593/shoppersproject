@@ -54,11 +54,15 @@
                                 {%if orderproduct.status != 'Placed' and orderproduct.status != 'Shipped'%}
                                 <option value="Placed">Placed </option>
                                 {%endif%}
-                                
+                                      
+                                {%if orderproduct.status != 'Shipped'%}
+                                <option value="Shipped">Shipped</option>
+                                {%endif%}
+                                      
                                 {%if orderproduct.status != 'Delivered'%}
-
                                 <option value="Delivered">Delivered</option>
                                 {%endif%}
+                                      
                                 {%if orderproduct.status != 'Cancelled' and orderproduct.status != 'Shipped'%}
 
                                 <option value="Cancelled">Cancelled</option>

@@ -72,6 +72,12 @@ def admin_home(request):
             'cat_count':cat_count,
             'product_count':product_count,
             'order_count': order_count,
+            'labels1':labels1,
+            'data1':data1,
+
+            'labels':labels,
+            'data':data
+
 
 
 

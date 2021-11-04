@@ -41,10 +41,6 @@ def admin_home(request):
         for d in orders:
             labels.append(calendar.month_name[d['month']])
             data.append([d['count']])
-        # queryset = Product.objects.all()
-        # for i in queryset:
-        #     labels.append(i.name)
-        #     data.append(i.stock)
 
         labels1 = []
         data1 = []

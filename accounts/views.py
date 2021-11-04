@@ -85,7 +85,7 @@ def user_reg(request):
                     try:
 
                         account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
-                        auth_token = "18651bb00bdbb076c24322e43c67c206"
+                        auth_token = "16af144c876d72ccc119af7743b78319"
                         client = Client(account_sid, auth_token)
 
                         verification = client.verify \
@@ -125,7 +125,7 @@ def reg_otp(request):
         last_name = request.session['last_name']
 
         account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
-        auth_token = "18651bb00bdbb076c24322e43c67c206"
+        auth_token = "16af144c876d72ccc119af7743b78319"
         client = Client(account_sid, auth_token)
 
         verification_check = client.verify \
@@ -220,7 +220,7 @@ def phone_login(request):
                 request.session['phone_no'] = phone_no
 
                 account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
-                auth_token = "18651bb00bdbb076c24322e43c67c206"
+                auth_token = "16af144c876d72ccc119af7743b78319"
 
                 client = Client(account_sid, auth_token)
 
@@ -247,7 +247,7 @@ def login_otp(request):
         phone_no = request.session['phone_no']
 
         account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
-        auth_token = "18651bb00bdbb076c24322e43c67c206"
+        auth_token = "16af144c876d72ccc119af7743b78319"
 
         client = Client(account_sid, auth_token)
 
@@ -291,7 +291,7 @@ def forgot_password(request):
                 request.session['phone_no'] = phone_no
 
                 account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
-                auth_token = "18651bb00bdbb076c24322e43c67c206"
+                auth_token = "16af144c876d72ccc119af7743b78319"
 
                 client = Client(account_sid, auth_token)
 
@@ -317,7 +317,7 @@ def forgot_otp(request):
         phone_no = request.session['phone_no']
 
         account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
-        auth_token = "18651bb00bdbb076c24322e43c67c206"
+        auth_token = "16af144c876d72ccc119af7743b78319"
 
         client = Client(account_sid, auth_token)
 

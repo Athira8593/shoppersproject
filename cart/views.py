@@ -19,40 +19,37 @@ def _cart_id(request):
 
 
 def add_cart(request, product_id):
-    if request.session.get('login') == True:
-        url = request.META.get('HTTP_REFERER')
+    url = request.META.get('HTTP_REFERER')
 
-        current_user = request.user
-        product = Product.objects.get(id=product_id)
+    current_user = request.user
+    product = Product.objects.get(id=product_id)
 
-        if current_user.is_authenticated:
-            try:
-                cart = Cart.objects.get(cart_id=_cart_id(request))
-            except Cart.DoesNotExist:
-                cart = Cart.objects.create(
-                    cart_id=_cart_id(request)
-                )
-            cart.save()
+    if current_user.is_authenticated:
+        try:
+            cart = Cart.objects.get(cart_id=_cart_id(request))
+        except Cart.DoesNotExist:
+            cart = Cart.objects.create(
+                cart_id=_cart_id(request)
+            )
+        cart.save()
 
-            try:
-                cart_item = CartItem.objects.get(product=product, user=current_user)
-                if cart_item.quantity < product.stock:
-                    cart_item.quantity += 1
-                    cart_item.save()
-                    messages.success(request, 'Product Added to Cart')
-                else:
-                    messages.success(request, 'Product already in Cart')
-
-
-            except CartItem.DoesNotExist:
-                cart_item = CartItem.objects.create(
-                    product=product,
-                    quantity=1,
-                    user=current_user )
+        try:
+            cart_item = CartItem.objects.get(product=product, user=current_user)
+            if cart_item.quantity < product.stock:
+                cart_item.quantity += 1
                 cart_item.save()
-        return redirect(url)
-    else:
-        return redirect('user_login')
+                messages.success(request, 'Product Added to Cart')
+            else:
+                messages.success(request, 'Product already in Cart')
+
+
+        except CartItem.DoesNotExist:
+            cart_item = CartItem.objects.create(
+                product=product,
+                quantity=1,
+                user=current_user )
+            cart_item.save()
+    return redirect(url)
 
 def add_item(request):
     product_id = request.POST['id']

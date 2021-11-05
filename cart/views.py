@@ -201,7 +201,7 @@ def checkCoupon(request, discount=0):
 
 
 
-
+@login_required(login_url='user_login')
 def buy_now(request,id, total=0, quantity=0, buynow_items=None):
     Buynow.objects.all().delete()
     if 'coupon_id' in request.session:

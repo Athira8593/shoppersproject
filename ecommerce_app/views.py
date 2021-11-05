@@ -120,16 +120,13 @@ def edit_address(request,id):
 
 
 def search(request):
-    if request.session.get('login') == True:
-        products = None
-        query = None
-        if 'q' in request.GET:
-            query=request.GET.get('q')
-            products=Product.objects.all().filter(Q(name__icontains=query) | Q(desc__icontains=query))
-        
-        return render(request,"search.html",{'query':query, 'products':products})
+    products = None
+    query = None
+    if 'q' in request.GET:
+        query=request.GET.get('q')
+        products=Product.objects.all().filter(Q(name__icontains=query) | Q(desc__icontains=query))
 
-    else:
-        return redirect('user_login')
+    return render(request,"search.html",{'query':query, 'products':products})
+
 
 

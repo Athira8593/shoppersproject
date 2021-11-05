@@ -83,7 +83,7 @@ def add_item(request):
             cart_item.save()
     return JsonResponse({'success': True})
 
-@login_required(login_url='user_login')
+
 def cart(request, total=0, quantity=0, grandtotal=0, cart_items=None):
     
     try:
@@ -108,7 +108,7 @@ def cart(request, total=0, quantity=0, grandtotal=0, cart_items=None):
     return render(request, 'cart/cart.html',context)
     
 
-@login_required(login_url='user_login')
+
 def cart_remove(request):
     current_user = request.user
     product_id = request.POST['id']
@@ -124,7 +124,7 @@ def cart_remove(request):
    
 
 
-@login_required(login_url='user_login')
+
 def full_remove(request):
     current_user = request.user
     id = request.POST['id']
@@ -134,7 +134,7 @@ def full_remove(request):
     return JsonResponse({'success': True})
 
 
-@login_required(login_url='user_login')
+
 def checkout(request, total=0, quantity=0, grandtotal=0, cart_items=None):
     try:
         if request.user.is_authenticated:

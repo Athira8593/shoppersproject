@@ -18,6 +18,8 @@ def _cart_id(request):
     return cart
 
 
+
+@login_required(login_url='user_login')
 def add_cart(request, product_id):
     url = request.META.get('HTTP_REFERER')
 

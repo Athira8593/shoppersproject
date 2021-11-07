@@ -11,6 +11,10 @@ urlpatterns = [
     path('user_profile/<id>', views.user_profile, name="user_profile"),
     path('edit_profile/<id>', views.edit_profile, name='edit_profile'),
     path('edit_address/<id>', views.edit_address, name='edit_address'),
+    path('change_password/<id>', views.change_password, name='change_password'),
+    path('current_pass/<id>', views.current_pass, name='current_pass'),
+
+    
     # path('add_product_checkout/<id>',views.add_product_checkout, name='add_product_checkout'),
     # path('remove_product_checkout/<id>',views.remove_product_checkout, name='remove_product_checkout'),
     path('search', views.search, name='search'),

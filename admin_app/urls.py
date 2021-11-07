@@ -7,7 +7,7 @@ urlpatterns = [
 
 # category
     path('category', views.category, name="category"),
-    path('add_category', views.add_category, name="add_category"),
+    path('add_category/', views.add_category, name="add_category"),
     path('add_cat', views.add_cat, name="add_cat"),
     path('admin_category_update/<slug>', views.admin_category_update, name='admin_category_update'),
     path('delete/', views.delete, name="delete"),

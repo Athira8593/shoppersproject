@@ -11,6 +11,9 @@ from cart.views import _cart_id
 from django.db.models import Q
 from orders.models import DeliveryAddress
 from django.views.decorators.cache import never_cache
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import auth
+from django.contrib.auth import authenticate
 
 def allproduct(request,c_slug=None):
     c_page=None
@@ -32,16 +35,12 @@ def all_product(request,c_slug=None):
 
 
 def single_view(request,c_slug,product_slug):
-    if request.session.get('login') == True:
         try:
             products = Product.objects.get(category__slug=c_slug, slug=product_slug)
             # in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request),product=products).exists()
         except Exception as e:
             raise e
-
         return render(request, 'single_view.html', {'product': products})
-    else:
-        return redirect('user_login')
 
 def user_profile(request,id):
     if request.session.get('login') == True:
@@ -82,54 +81,50 @@ def edit_address(request,id):
         return redirect('user_login')
 
 
+def current_pass(request,id):
+    if request.session.get('login') == True:
+        if request.method== 'POST':
+            password = request.POST.get('password')
+            user = request.user.password
+            print(user)
+            print(password)
+            if user == password:
+                print(user)
+                return redirect('change_password' ,id=id)
+            else:
+                return redirect('current_pass', id=id)
+        else:
+            return render(request, 'user/current_pass.html')
+    else:
+        return redirect('user_login')
 
 
-# def buy_now(request,id, total = 0, quantity=1):
-#     products = Product.objects.get(id=id)
-#     total += (products.price * quantity)
-#     adresses = DeliveryAddress.objects.all().filter(user = request.user)
 
-
-#     return render(request,'checkout.html', {'products':products, 'total':total, 'adresses':adresses, 'quantity':quantity})
-    
-# def add_product_checkout(request,id,quantity=1):
-#     if request.session.get('login') == True:
-#         products = Product.objects.get(id=id)
-#         if quantity < products.stock:
-#             quantity += 1
-#             products.save()
-#             return redirect('buy_now' ,id=id)
-#         else:
-#             messages.success(request, 'No more product availble')
-#             return redirect('buy_now' ,id=id)
-#     else:
-#         return redirect('user_login')
-
-# def remove_product_checkout(request,id,quantity=1):
-#     if request.session.get('login') == True:
-#         products = Product.objects.get(id=id)
-#         if quantity < products.stock and quantity > 1:
-#             quantity -= 1
-#             products.save()
-#             return redirect('buy_now' ,id=id)
-#         else:
-#             return redirect('buy_now' ,id=id)
-#     else:
-#         return redirect('user_login')
+def change_password(request,id):
+    if request.session.get('login') == True:
+        user = Account.objects.get(id=id)
+        if request.method== 'POST':
+            password1 = request.POST['password1']
+            password2 = request.POST['password2']
+            if password1 == password2:
+                user.save()
+                return redirect('user_profile', id=id)
+            else:
+                return redirect('change_password')
+        else:
+            return render(request, 'user/change_password.html')
+    else:
+        return redirect('user_login')
 
 
 
 def search(request):
-    if request.session.get('login') == True:
-        products = None
-        query = None
-        if 'q' in request.GET:
-            query=request.GET.get('q')
-            products=Product.objects.all().filter(Q(name__icontains=query) | Q(desc__icontains=query))
-        
-        return render(request,"search.html",{'query':query, 'products':products})
-
-    else:
-        return redirect('user_login')
+    products = None
+    query = None
+    if 'q' in request.GET:
+        query=request.GET.get('q')
+        products=Product.objects.all().filter(Q(name__icontains=query) | Q(desc__icontains=query))
+    
+    return render(request,"search.html",{'query':query, 'products':products})
 
 

@@ -17,7 +17,7 @@ def _cart_id(request):
         cart = request.session.create()
     return cart
 
-
+@login_required(login_url='user_login')
 def add_cart(request, product_id):
     url = request.META.get('HTTP_REFERER')
 
@@ -38,11 +38,10 @@ def add_cart(request, product_id):
             if cart_item.quantity < product.stock:
                 cart_item.quantity += 1
                 cart_item.save()
-                messages.success(request, 'Product Added to Cart')
             else:
-                messages.success(request, 'Product already in Cart')
-
-
+                pass
+               
+         
         except CartItem.DoesNotExist:
             cart_item = CartItem.objects.create(
                 product=product,
@@ -70,9 +69,8 @@ def add_item(request):
             if cart_item.quantity < product.stock:
                 cart_item.quantity += 1
                 cart_item.save()
-                messages.success(request, 'Product Added to Cart')
             else:
-                messages.success(request, 'Product already in Cart')
+                pass
 
 
         except CartItem.DoesNotExist:
@@ -117,7 +115,6 @@ def cart_remove(request):
     if cart_item.quantity > 1:
         cart_item.quantity -= 1
         cart_item.save()
-        messages.success(request, 'Product Removed')
     else:
         cart_item.delete()
     return JsonResponse({'success': True})
@@ -198,7 +195,7 @@ def checkCoupon(request, discount=0):
 
 
 
-
+@login_required(login_url='user_login')
 
 def buy_now(request,id, total=0, quantity=0, buynow_items=None):
     Buynow.objects.all().delete()
@@ -220,7 +217,6 @@ def buy_now(request,id, total=0, quantity=0, buynow_items=None):
     try:
         buynow_item = Buynow.objects.get(product=product, user=request.user)
         if buynow_item.quantity > buynow_item.product.stock-1:
-            messages.info(request, 'Product Out of Stock')
             return redirect('cart')
         else:
             buynow_item.quantity += 1

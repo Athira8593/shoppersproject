@@ -50,7 +50,6 @@ def admin_logout(request):
 
 
 # user signup
-@never_cache
 def user_reg(request):
     if request.session.get('login') == True:
         return redirect('/')
@@ -85,7 +84,7 @@ def user_reg(request):
                     try:
 
                         account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
-                        auth_token = "16af144c876d72ccc119af7743b78319"
+                        auth_token = "692d55117cf029d9d85c051f740a23a6"
                         client = Client(account_sid, auth_token)
 
                         verification = client.verify \
@@ -125,7 +124,7 @@ def reg_otp(request):
         last_name = request.session['last_name']
 
         account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
-        auth_token = "16af144c876d72ccc119af7743b78319"
+        auth_token = "692d55117cf029d9d85c051f740a23a6"
         client = Client(account_sid, auth_token)
 
         verification_check = client.verify \
@@ -157,7 +156,6 @@ def reg_otp(request):
 
 
 # user login
-@never_cache
 
 def user_login(request):
     if request.session.get('login') == True:
@@ -166,6 +164,7 @@ def user_login(request):
         if request.method == 'POST':
             email = request.POST['email']
             password = request.POST['password']
+            print(password)
 
             user = auth.authenticate(email=email,password=password)
 
@@ -220,7 +219,7 @@ def phone_login(request):
                 request.session['phone_no'] = phone_no
 
                 account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
-                auth_token = "16af144c876d72ccc119af7743b78319"
+                auth_token = "692d55117cf029d9d85c051f740a23a6"
 
                 client = Client(account_sid, auth_token)
 
@@ -247,7 +246,7 @@ def login_otp(request):
         phone_no = request.session['phone_no']
 
         account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
-        auth_token = "16af144c876d72ccc119af7743b78319"
+        auth_token = "692d55117cf029d9d85c051f740a23a6"
 
         client = Client(account_sid, auth_token)
 
@@ -291,7 +290,7 @@ def forgot_password(request):
                 request.session['phone_no'] = phone_no
 
                 account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
-                auth_token = "16af144c876d72ccc119af7743b78319"
+                auth_token = "692d55117cf029d9d85c051f740a23a6"
 
                 client = Client(account_sid, auth_token)
 
@@ -317,7 +316,7 @@ def forgot_otp(request):
         phone_no = request.session['phone_no']
 
         account_sid = "ACce7c425fcc0f158851246fbdfb26c9bb"
-        auth_token = "16af144c876d72ccc119af7743b78319"
+        auth_token = "692d55117cf029d9d85c051f740a23a6"
 
         client = Client(account_sid, auth_token)
 

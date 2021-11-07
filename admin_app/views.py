@@ -41,7 +41,6 @@ def admin_home(request):
         for d in orders:
             labels.append(calendar.month_name[d['month']])
             data.append([d['count']])
-
         labels1 = []
         data1 = []
         
@@ -66,14 +65,23 @@ def admin_home(request):
         product_count=Product.objects.count()
         cat_count=Category.objects.count()
 
-
+        category = Category.objects.all().order_by('-id')[:5]
+        products = Product.objects.all().order_by('-id')[:3]
+        orderproducts = OrderProduct.objects.all().order_by('-id')[:5]
 
         context={
             'cat_count':cat_count,
             'product_count':product_count,
             'order_count': order_count,
+            'labels1':labels1,
+            'data1':data1,
 
+            'labels':labels,
+            'data':data,
 
+            'category':category,
+            'products':products,
+            'orderproducts':orderproducts,
 
         }
         return render(request, 'admin/admin_home.html', context)
@@ -104,6 +112,7 @@ def add_category(request):
                 messages.error(request, 'Category already added')
                 return redirect('add_category')
         else:
+
             form = CategoryForm()
             context = {'form': form}
             return render(request, 'admin/add_category.html', context)
@@ -246,6 +255,7 @@ def user_man(request):
 
 
 
+
 def unblock_user(request,):
     if request.session.get('signin') == True:
         id = request.POST['id']
@@ -299,7 +309,6 @@ def admin_coupon(request):
             form = CouponForm(request.POST)
             if form.is_valid():
                 form.save()
-                messages.info(request, "1 Coupon Added Successfully")
                 return redirect('admin_coupon_list')
         context = {'form': form}
         return render(request, "admin/new_coupon.html", context)
@@ -325,7 +334,6 @@ def coupon_edit(request, id):
             form = CouponForm(request.POST, instance=qs)
             if form.is_valid():
                 form.save()
-                messages.info(request, "1 Coupon Edited Successfully")
                 return redirect('admin_coupon_list')
         context = {'form': form}
         return render(request, 'admin/admin_coupon_edit.html', context)
@@ -356,7 +364,7 @@ def order_reports(request):
             return render(request, 'admin/admin_reports.html', {'reports': order_search})
         else:
             product = Product.objects.all()
-            reports = Order.objects.all()
+            reports = OrderProduct.objects.all()
             coupon = Coupon.objects.all()
             context = {
                 

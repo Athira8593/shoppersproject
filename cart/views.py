@@ -21,6 +21,7 @@ def _cart_id(request):
         cart = request.session.create()
     return cart
 
+
 @login_required(login_url='user_login')
 def add_cart(request, product_id):
     url = request.META.get('HTTP_REFERER')
@@ -204,6 +205,8 @@ def checkCoupon(request, discount=0):
 
     }
     return JsonResponse(data)
+
+
 
 
 

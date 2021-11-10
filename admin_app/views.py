@@ -84,6 +84,7 @@ def admin_home(request):
             'labels1':labels1,
             'data1':data1,
 
+
             'labels':labels,
             'data':data,
 

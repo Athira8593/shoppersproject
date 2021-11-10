@@ -36,12 +36,17 @@ def all_product(request,c_slug=None):
 
 
 def single_view(request,c_slug,product_slug):
-        try:
-            products = Product.objects.get(category__slug=c_slug, slug=product_slug)
-            # in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request),product=products).exists()
-        except Exception as e:
-            raise e
-        return render(request, 'single_view.html', {'product': products})
+
+
+    try:
+        products = Product.objects.get(category__slug=c_slug, slug=product_slug)
+        # in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request),product=products).exists()
+    except Exception as e:
+        raise e
+
+    return render(request, 'single_view.html', {'product': products})
+
+
 
 def user_profile(request,id):
     if request.session.get('login') == True:
@@ -125,8 +130,10 @@ def search(request):
     if 'q' in request.GET:
         query=request.GET.get('q')
         products=Product.objects.all().filter(Q(name__icontains=query) | Q(desc__icontains=query))
-    
+
+
     return render(request,"search.html",{'query':query, 'products':products})
+
 
 def address_book(request):
     adresses = DeliveryAddress.objects.all().filter(user = request.user)

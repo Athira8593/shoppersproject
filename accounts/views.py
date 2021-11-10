@@ -83,8 +83,10 @@ def user_reg(request):
                 else:
                     try:
 
+
                         account_sid = config('account_sid')
                         auth_token = config('auth_token')
+
                         client = Client(account_sid, auth_token)
 
                         verification = client.verify \
@@ -123,8 +125,10 @@ def reg_otp(request):
         first_name = request.session['first_name']
         last_name = request.session['last_name']
 
+
         account_sid = config('account_sid')
         auth_token = config('auth_token')
+
         client = Client(account_sid, auth_token)
 
         verification_check = client.verify \
@@ -218,8 +222,10 @@ def phone_login(request):
 
                 request.session['phone_no'] = phone_no
 
+
                 account_sid = config('account_sid')
                 auth_token = config('auth_token')
+
 
                 client = Client(account_sid, auth_token)
 
@@ -245,9 +251,11 @@ def login_otp(request):
 
         phone_no = request.session['phone_no']
 
+
         
         account_sid = config('account_sid')
         auth_token = config('auth_token')
+
 
         client = Client(account_sid, auth_token)
 
@@ -290,6 +298,7 @@ def forgot_password(request):
 
                 request.session['phone_no'] = phone_no
 
+
                 account_sid = config('account_sid')
                 auth_token = config('auth_token')
 
@@ -315,6 +324,7 @@ def forgot_otp(request):
         otp = request.POST['otp']
 
         phone_no = request.session['phone_no']
+
 
 
         account_sid = config('account_sid')

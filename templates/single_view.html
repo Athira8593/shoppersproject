@@ -140,6 +140,9 @@ Author URL: http://w3layouts.com
                       {%endfor%}
                     </div>
                   </li>
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'view_wishlist' user.id %}">WISHLIST</a>
+                </li>
                   <li class="transmitvcart galssescart2 cart cart box_1">
                     <form action="{% url 'cart_detail' %}" method="get" class="">
                       <button class="top_transmitv_cart" type="submit" name="submit" value="">
@@ -187,6 +190,7 @@ Author URL: http://w3layouts.com
                 <li data-thumb="{{product.image1.url}}">
                   <div class="thumb-image"> <img src="{{product.image1.url}}" data-imagezoom="true" class="img-fluid" alt=" ">
                   </div>
+                  
                 </li>
                 <li data-thumb="{{product.image2.url}}">
                   <div class="thumb-image"> <img src="{{product.image2.url}}" data-imagezoom="true" class="img-fluid" alt=" ">

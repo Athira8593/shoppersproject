@@ -4,7 +4,7 @@ from ecommerce_app.models import Category, Product
 from django import forms
 from django.db.models import fields
 from orders.models import Order
-from cart.models import CouponCheck,Coupon
+from cart.models import CouponCheck,Coupons as Coupon
 
 #category
 class CategoryForm(forms.ModelForm):
@@ -75,9 +75,22 @@ class OrderForm(forms.ModelForm):
         super(OrderForm, self).__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
+#date
+
+class DateInput(forms.DateInput):
+    input_type = 'date'
 
 #coupon
 class CouponForm(forms.ModelForm):
     class Meta:
         model = Coupon
-        fields = ['code', 'discount', 'status']
+        fields = ['code', 'discount','valid_from','valid_to']
+        widgets = {
+            'valid_from': DateInput(),
+            'valid_to': DateInput()
+
+        }
+class CatofferForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['cat_offer']

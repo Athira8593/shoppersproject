@@ -7,6 +7,7 @@ class Category(models.Model):
     name=models.CharField(max_length=250, unique=True)
     slug=models.SlugField(max_length=250, unique= True)
     desc=models.TextField(blank=True)
+    cat_offer = models.IntegerField(null=True)
     image1=models.ImageField(upload_to='category',blank=True)
     created=models.DateField(auto_now=True)
     updated=models.DateField(auto_now=True)

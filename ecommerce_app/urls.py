@@ -13,8 +13,9 @@ urlpatterns = [
     path('edit_address/<id>', views.edit_address, name='edit_address'),
     path('change_password/<id>', views.change_password, name='change_password'),
     path('current_pass/<id>', views.current_pass, name='current_pass'),
-
-    
+    path('address_book', views.address_book, name='address_book'),
+    path('del_add/<id>', views.del_add, name='del_add'),
+    path('update_address', views.update_address, name='update_address'),
     # path('add_product_checkout/<id>',views.add_product_checkout, name='add_product_checkout'),
     # path('remove_product_checkout/<id>',views.remove_product_checkout, name='remove_product_checkout'),
     path('search', views.search, name='search'),

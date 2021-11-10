@@ -1,6 +1,9 @@
+from datetime import timezone
+from django.utils import timezone
+
 from django.shortcuts import render, redirect, get_object_or_404
 from ecommerce_app.models import Product
-from .models import Cart, CartItem, CouponCheck,Coupon,Buynow
+from .models import Cart, CartItem, CouponCheck,Coupons as Coupon,Buynow,Wishlist
 from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import Account
 from admin_app.forms import CheckoutForm
@@ -8,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http.response import JsonResponse
 from orders.models import DeliveryAddress
+from datetime import date
 # Create your views here.
 
 
@@ -23,7 +27,6 @@ def add_cart(request, product_id):
 
     current_user = request.user
     product = Product.objects.get(id=product_id)
-
     if current_user.is_authenticated:
         try:
             cart = Cart.objects.get(cart_id=_cart_id(request))
@@ -109,7 +112,8 @@ def cart(request, total=0, quantity=0, grandtotal=0, cart_items=None):
 @login_required(login_url='user_login')
 def cart_remove(request):
     current_user = request.user
-    product_id = request.POST['id']
+    product_id = request.POST['id']	
+
     product = get_object_or_404(Product, id=product_id)
     cart_item = CartItem.objects.get(product=product, user=current_user)
     if cart_item.quantity > 1:
@@ -133,6 +137,14 @@ def full_remove(request):
 
 @login_required(login_url='user_login')
 def checkout(request, total=0, quantity=0, grandtotal=0, cart_items=None):
+    today = date.today()
+    coupon = Coupon.objects.all()
+    for cpn in coupon:
+        if cpn.valid_from <= today and cpn.valid_to >= today:
+            Coupon.objects.filter(id=cpn.id).update(status=True)
+            
+        else:
+            Coupon.objects.filter(id=cpn.id).update(status=False)
     try:
         if request.user.is_authenticated:
             cart_items = CartItem.objects.filter(user=request.user, active=True)
@@ -167,11 +179,14 @@ def checkCoupon(request, discount=0):
 
     flag = 0
     discount_price = 0
+    today = date.today()
     coupon = request.POST['coupon']
     total = float(request.POST['total'])
     discount = 0
     if Coupon.objects.filter(code=coupon).exists():
         coup = Coupon.objects.get(code=coupon)
+
+           
         if coup.status == True:
             flag = 1
             if not CouponCheck.objects.filter(user=request.user, coupon=coup):
@@ -258,4 +273,27 @@ def buy_now(request,id, total=0, quantity=0, buynow_items=None):
     }
     return render(request, 'buynow/buy_now_checkout.html', context)
 
+@login_required(login_url='user_login')
+def view_wishlist(request,id):
+    wishlist = Wishlist.objects.filter(user=request.user)
+    return render(request, 'wishlist.html',{'wishlist':wishlist})
 
+
+def add_wishlist(request,id):
+    url = request.META.get('HTTP_REFERER')
+    product = Product.objects.get(id=id)
+    if Wishlist.objects.filter(product=product, user=request.user).exists():
+        pass
+    else:
+        Wishlist.objects.create(product=product, user=request.user)
+    return redirect(url)
+
+def del_wishlist(request,id):
+    url = request.META.get('HTTP_REFERER')
+    product = Product.objects.get(id=id)
+    Wishlist.objects.get(product=product, user=request.user).delete()
+    return redirect(url)
+
+    
+
+    

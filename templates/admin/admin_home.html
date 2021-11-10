@@ -25,10 +25,10 @@
         <div class="card bg-gradient-danger card-img-holder text-white">
           <div class="card-body">
             <img src="{% static 'images1/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
-            <h4 class="font-weight-normal mb-3">Total Category
+            <h4 class="font-weight-normal mb-3 h1" >Total Income
             </h4>
-            <h2 class="mb-5">{{cat_count}}</h2>
-            <h6 class="card-text">{{c_date}}{{c_day}}</h6>
+            <h2 class="mb-5">{{income}}</h2>
+            <h6 class="card-text">{{i_date}}{{i_day}}</h6>
           </div>
         </div>
       </div>
@@ -36,7 +36,7 @@
         <div class="card bg-gradient-info card-img-holder text-white">
           <div class="card-body">
             <img src="{% static 'images1/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
-            <h4 class="font-weight-normal mb-3">Total Product
+            <h4 class="font-weight-normal mb-3 h1">Total Product
             </h4>
             <h2 class="mb-5">{{product_count}}</h2>
             <h6 class="card-text">{{p_date}}{{p_day}}</h6>
@@ -47,7 +47,7 @@
         <div class="card bg-gradient-success card-img-holder text-white">
           <div class="card-body">
             <img src="{% static 'images1/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
-            <h4 class="font-weight-normal mb-3"> Total Orders
+            <h4 class="font-weight-normal mb-3 h1"> Total Orders
             </h4>
             <h2 class="mb-5">{{order_count}}</h2>
             <h6 class="card-text">{{o_date}}{{o_day}}</h6>
@@ -155,18 +155,27 @@
         </div>
       </div>
 
-      <div class="col-md-7 grid-margin stretch-card" style="height: 30rem;">
+      <div class="col-md-7 grid-margin stretch-card" style="height: 32rem;">
         <div class="card" style="width: 10%;">
             <div class="card-body">
               <h4 class="card-title">Recent Products </h4>
-                <div class="col-md-10 text-center" style="margin-left: 5%; margin-top: 3rem;" >
+              <hr>
+                <div class="col-md-10 text-center" style="margin-left: 5%; margin-top: 1.5rem;" >
                     <ul>
         
                       {% for product in products %}
-                      <div style="display: flex; justify-content: left;">                     
-                        <img src="{{product.image1.url }}" style="width: 5rem; height: 5rem; border-radius: 5rem; margin-bottom: 2rem;" >
-                        <div style="margin-left: 5rem; margin-top: 2rem;">
+                      <div  style="display: flex; justify-content: left;">                     
+                        <img src="{{product.image1.url }}" style="width: 3rem; height: 3rem; border-radius: 5rem; margin-bottom: 2rem;" >
+                        <div class="col-md-2" style="margin-left: 5rem; margin-top: 1rem;">
                           {{product.name}}
+                        </div>
+                        <div class="col-md-2" style="margin-left: 5rem; margin-top: 1rem;">
+                          <b>{{product.price}}</b>
+                          <del style="color: rgb(160, 160, 160);">{{product.actual_price}}</del>
+                        </div>
+
+                        <div class="col-md-2" style="margin-left: 5rem; margin-top: 1rem;">
+                          {{product.stock}}
                         </div>
                         <br>
                       </div>
@@ -203,10 +212,10 @@
                     <div class="card bg-gradient-info card-img-holder text-white">
                       <div class="card-body">
                         <img src="{% static 'images1/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
-                        <h4 class="font-weight-normal mb-3">Total Product
+                        <h4 class="font-weight-normal mb-3">Total Users
                         </h4>
-                        <h2 class="mb-5">{{product_count}}</h2>
-                        <h6 class="card-text">{{p_date}}{{p_day}}</h6>
+                        <h2 class="mb-5">{{user_count}}</h2>
+                        <h6 class="card-text"></h6>
                       </div>
                     </div>
                   </div>

@@ -1,7 +1,7 @@
 from django.db import models
 from accounts.models import Account
 from ecommerce_app.models import Product
-from cart.models import Coupon
+from cart.models import Coupons as Coupon
 
 # Create your models here.
 

@@ -7,7 +7,7 @@
   <div class="main-panel" style=" margin-left: 8rem;">
     <div class="content-wrapper">
       <div class="page-header">
-        <h3 class="page-title"> Add Coupon </h3>
+        <h3 class="page-title"> Update Coupon </h3>
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#"></a></li>
@@ -38,8 +38,13 @@
                         </div>
 
                         <div class="form-group">
-                          <label for="inputAddress">Status</label>
-                          {{form.status}}
+                          <label for="inputAddress">Valid from</label>
+                          {{form.valid_from}}
+                        </div> 
+                        
+                        <div class="form-group">
+                          <label for="inputAddress"> Valid to</label>
+                          {{form.valid_to}}
                         </div>
 
                       </div>

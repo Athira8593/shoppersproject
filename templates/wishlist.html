@@ -25,41 +25,39 @@
 			<h4 class="text-center">Handpicked {{category.name}} just for you</h4>
 			<!-- /row-->
 			<div class="ecom-products-grids row mt-lg-5 mt-3">
-				{% for product in products %}
+				{% for wish in wishlist %}
 				<div class="col-lg-3 col-6 product-incfhny mt-4">
 					<div class="product-grid2 transmitv">
 						<div class="product-image2">
-							<a href="{{product.get_url}}">
-								<img class="" src="{{product.image1.url}}">
+							<a href="{{wish.product.get_url}}">
+								<img class="" src="{{wish.product.image1.url}}">
 								<!-- <img class="" src="{% static 'images/shop-11.jpg' %}"> -->
 							</a>
-							
 							<ul class="social">
-								<a href="{% url 'add_wishlist' product.id %}" class="btn btn-sm btn-danger "><i class="fa fa-heart"></i></a>
+								<a href="{% url 'del_wishlist' wish.product.id %}" class="btn btn-sm btn-danger "><i class="fa fa-heart"></i></a>
 							</ul>				
 							<div class="transmitv single-item">
-								{% if product.stock == 0%}
+								{% if wish.product.stock == 0%}
 								<button type="submit" class="transmitv-cart ptransmitv-cart add-to-cart">
 									OUT OF STOCK
 								</button>
 								{%else%}
-								<form action="{% url 'add_cart' product.id %}" method="post">
-								{%csrf_token%}
-									<button onclick="pop()" type="submit" class="transmitv-cart ptransmitv-cart add-to-cart">
-										Add to Cart
-									</button>
-								</form>
+								<form action="{% url 'add_cart' wish.product.id %}" method="post">
+									{%csrf_token%}
+										<button onclick="pop()" type="submit" class="transmitv-cart ptransmitv-cart add-to-cart">
+											Add to Cart
+										</button>
+									</form>
 								{%endif%}
 
 							</div>
 						</div>
 						<div class="product-content">
-							<h3 class="title"><a href="{% url 'single_view' product.category product.slug %}">{{product.name}}</a></h3>
-							{% if product.offer %}
-							<b style="color: red;">{{product.offer}}% off</b><br>
-							<span class="price"><del>{{product.actual_price}}</del>RS {{product.price}}</span>
+							{% if wish.product.offer %}
+							<b style="color: red;">{{wish.product.offer}}% off</b><br>
+							<span class="price"><del>{{wish.product.actual_price}}</del>RS {{wish.product.price}}</span>
 							{%else%}
-							<span class="price">RS {{product.price}}</span>
+							<span class="price">RS {{wish.product.price}}</span>
 							{%endif%}
 						</div>
 					</div>

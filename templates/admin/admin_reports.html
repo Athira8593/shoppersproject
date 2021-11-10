@@ -19,11 +19,13 @@
           <button type="submit" class="btn btn-primary">Search</button>
         </form>
       </div>
+
 <div class="col-md-6 col-sm-12" style="margin-top: 10rem; padding-left: 2rem;">
+  {% if reports %}
   <a href="{% url 'order_export_csv' %}" class="btn btn-primary" style="height: 3rem;">Export to CSV</a>&nbsp;&nbsp;
   <a href="{% url 'order_export_excel' %}" class="btn btn-primary" style="height: 3rem;">Export to Excel</a>&nbsp;&nbsp;
   <a href="{% url 'order_export_pdf' %}" class="btn btn-primary" style="height: 3rem;">Export to Pdf</a>
-
+  {%endif%}
 </div>
         <div class="col-lg-12 grid-margin stretch-card" style="margin-top: 2rem;">
           
@@ -56,7 +58,7 @@
                   <td>{{i.user}}</td>
                   <td>{{i.user.phone_no}}</td>
                   <td>Paypal</td>
-                 
+
                   <td>{{i.status}}</td>
                   <td>{{i.order_total}}</td>
                 </tr>

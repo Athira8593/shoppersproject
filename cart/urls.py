@@ -10,5 +10,8 @@ urlpatterns=[
     path('checkCoupon/', views.checkCoupon, name="checkCoupon"),
     path('add_item',views.add_item,name="add_item"),
     path('buy_now/<id>', views.buy_now, name='buy_now'),
+    path('view_wishlist/<id>', views.view_wishlist, name='view_wishlist'),
+    path('add_wishlist/<id>', views.add_wishlist, name='add_wishlist'),
+    path('del_wishlist/<id>', views.del_wishlist, name='del_wishlist'),
 
 ]

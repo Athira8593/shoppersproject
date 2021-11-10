@@ -1,13 +1,14 @@
+from re import T
 from typing import FrozenSet
 from django.db import models
 from django.db.models.functions.datetime import ExtractMonth
 from django.views.decorators.cache import never_cache
-from cart.models import Coupon
+from cart.models import Coupons as Coupon
 from orders.views import payment, place_order, status
 from orders.models import Order, OrderProduct, Payment
 from django.http.response import HttpResponse, JsonResponse
 from django.contrib import messages
-from .forms import CategoryForm, ProductForm, CouponForm
+from .forms import CategoryForm, ProductForm, CouponForm,CatofferForm
 from django.shortcuts import get_object_or_404, render, redirect
 from ecommerce_app.models import Product, Category
 from accounts.models import Account
@@ -21,6 +22,7 @@ import tempfile
 from weasyprint import HTML
 from django.contrib.auth.decorators import login_required,user_passes_test
 import calendar
+from datetime import date
 
 
 # Admin dashboard
@@ -33,6 +35,11 @@ def admin_home(request):
     Delivered=0
 
     if request.session.get('signin') == True:
+        income = 0
+        orders = Order.objects.all()
+        for order in orders:
+            income += order.order_total
+        
         labels = []
         data = []
         orders=OrderProduct.objects.annotate(month=ExtractMonth('created_at')).values('month').annotate(count=Count('id')).values('month','count')
@@ -41,7 +48,6 @@ def admin_home(request):
         for d in orders:
             labels.append(calendar.month_name[d['month']])
             data.append([d['count']])
-
         labels1 = []
         data1 = []
         
@@ -65,8 +71,11 @@ def admin_home(request):
         order_count = OrderProduct.objects.count()
         product_count=Product.objects.count()
         cat_count=Category.objects.count()
+        user_count = Account.objects.count()
 
-
+        category = Category.objects.all().order_by('-id')[:5]
+        products = Product.objects.all().order_by('-id')[:5]
+        orderproducts = OrderProduct.objects.all().order_by('-id')[:5]
 
         context={
             'cat_count':cat_count,
@@ -75,17 +84,22 @@ def admin_home(request):
             'labels1':labels1,
             'data1':data1,
 
+
             'labels':labels,
-            'data':data
+            'data':data,
 
-
-
+            'category':category,
+            'products':products,
+            'orderproducts':orderproducts,
+            'income': income,
+            'user_count':user_count
 
         }
         return render(request, 'admin/admin_home.html', context)
     else:
         return redirect('logincheck')
-
+        
+#category offer
 
 # Category Management
 
@@ -110,6 +124,7 @@ def add_category(request):
                 messages.error(request, 'Category already added')
                 return redirect('add_category')
         else:
+
             form = CategoryForm()
             context = {'form': form}
             return render(request, 'admin/add_category.html', context)
@@ -252,6 +267,7 @@ def user_man(request):
 
 
 
+
 def unblock_user(request,):
     if request.session.get('signin') == True:
         id = request.POST['id']
@@ -301,12 +317,24 @@ def ad_order_history(request):
 def admin_coupon(request):
     if request.session.get('signin') == True:
         form = CouponForm()
+        today = date.today()
         if request.method == 'POST':
             form = CouponForm(request.POST)
             if form.is_valid():
+                code = form.cleaned_data['code']
                 form.save()
-                messages.info(request, "1 Coupon Added Successfully")
-                return redirect('admin_coupon_list')
+                coupon = Coupon.objects.get(code=code)
+                try:
+                    Coupon.objects.get(code__iexact=code,
+                                        valid_from__lte = today,
+                                        valid_to__gte = today,
+                                        )
+                    Coupon.objects.filter(id=coupon.id).update(status=True)
+                except:
+                    Coupon.objects.filter(id=coupon.id).update(status=False)
+                return redirect('admin_coupon_list' )
+            else:
+                return redirect('admin_coupon')
         context = {'form': form}
         return render(request, "admin/new_coupon.html", context)
     else:
@@ -316,22 +344,34 @@ def admin_coupon(request):
 def admin_coupon_list(request):
     if request.session.get('signin') == True:
         coupon = Coupon.objects.all()
+        today = date.today()
+        for cpn in coupon:
+            if cpn.valid_from <= today and cpn.valid_to >= today:
+                Coupon.objects.filter(id=cpn.id).update(status=True)
+                
+            else:
+                Coupon.objects.filter(id=cpn.id).update(status=False)
         context = {'coupon': coupon}
         return render(request, 'admin/coupon_list.html', context)
     else:
         return redirect('logincheck')
 
 
-
 def coupon_edit(request, id):
     if request.session.get('signin') == True:
+        today = date.today()
         qs = get_object_or_404(Coupon, id=id)
         form = CouponForm(instance=qs)
         if request.method == 'POST':
             form = CouponForm(request.POST, instance=qs)
             if form.is_valid():
                 form.save()
-                messages.info(request, "1 Coupon Edited Successfully")
+                if qs.valid_from <= today and qs.valid_to >= today:
+                    Coupon.objects.filter(id=qs.id).update(status=True)
+                   
+                else:
+                    Coupon.objects.filter(id=qs.id).update(status=False)
+                   
                 return redirect('admin_coupon_list')
         context = {'form': form}
         return render(request, 'admin/admin_coupon_edit.html', context)
@@ -362,7 +402,7 @@ def order_reports(request):
             return render(request, 'admin/admin_reports.html', {'reports': order_search})
         else:
             product = Product.objects.all()
-            reports = Order.objects.all()
+            reports = OrderProduct.objects.all()
             coupon = Coupon.objects.all()
             context = {
                 

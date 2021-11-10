@@ -9,7 +9,7 @@ from cart.models import Cart, CartItem,Buynow
 from . forms import OrderForm, DeliveryAddressForm
 import datetime
 import json
-from cart.models import Coupon,CouponCheck
+from cart.models import Coupons as Coupon,CouponCheck
 from ecommerce_app.models import Product
 from accounts.models import Account
 
@@ -347,4 +347,4 @@ def buynow_payment(request):
 
     return JsonResponse(data)
 
- 
+

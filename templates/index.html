@@ -108,7 +108,9 @@
 								<img class="" src="{{product.image1.url}}">
 								<!-- <img class="" src="{% static 'images/shop-11.jpg' %}"> -->
 							</a>
-							
+							<ul class="social">
+								<a href="{% url 'add_wishlist' product.id %}" class="btn btn-sm btn-danger "><i class="fa fa-heart"></i></a>
+							</ul>	
 							<div class="transmitv single-item">
 							<form action="{% url 'add_cart' product.id %}" method="post">
 								{%csrf_token%}
